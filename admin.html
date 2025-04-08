@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Usuário - Solicitações Logísticas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    /* Header Styles */
+    .header-container {
+      background-color: #064d96;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .logo-icon {
+      margin-right: 0.75rem;
+      font-size: 1.75rem;
+      font-weight: bold;
+    }
+
+    .header-title {
+      flex-grow: 1;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .truck-icon {
+      margin-left: 0.75rem;
+      font-size: 1.5rem;
+    }
+
+    /* Admin Badge */
+    .admin-badge {
+      background-color: #0091e2;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-left: 1rem;
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #fff;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* Page Title */
+    .page-title {
+      color: #064d96;
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .page-subtitle {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    /* Restricted Area Notice */
+    .restricted-notice {
+      background-color: #f8f9fa;
+      border-left: 4px solid #061d51;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .restricted-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: #061d51;
+    }
+
+    .restricted-text {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .restricted-text strong {
+      color: #061d51;
+    }
+
+    /* Form Styles */
+    .form-container {
+      margin-top: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-input:focus {
+      border-color: #0091e2;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 145, 226, 0.1);
+    }
+
+    .form-input.error {
+      border-color: #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    /* Password Strength Meter */
+    .password-strength {
+      margin-top: 0.5rem;
+      height: 5px;
+      background-color: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .password-strength-meter {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background-color 0.3s;
+    }
+
+    .password-strength-text {
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+      color: #6c757d;
+    }
+
+    /* Form Actions */
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .cancel-button {
+      padding: 0.75rem 1.5rem;
+      background-color: #f8f9fa;
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .cancel-button:hover {
+      background-color: #e9ecef;
+    }
+
+    .submit-button {
+      padding: 0.75rem 1.5rem;
+      background-color: #064d96;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-button:hover {
+      background-color: #0091e2;
+    }
+
+    .submit-button:disabled {
+      background-color: #a0a0a0;
+      cursor: not-allowed;
+    }
+
+    /* Success Message */
+    .success-message {
+      display: none;
+      background-color: #d4edda;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 5px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      
+      .main-container {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header-container">
+    <div class="logo">
+      <span class="logo-icon">🏠</span>
+    </div>
+    <div class="header-title">
+      Solicitações logísticas
+      <span class="admin-badge">Admin</span>
+    </div>
+    <div class="truck-icon">🚚</div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <h1 class="page-title">Criar Novo Usuário</h1>
+    <p class="page-subtitle">Cadastre um novo usuário para acessar o sistema</p>
+    
+    <!-- Restricted Area Notice -->
+    <div class="restricted-notice">
+      <div class="restricted-icon">🔒</div>
+      <div class="restricted-text">
+        <strong>Área restrita:</strong> Esta página é destinada apenas a administradores do sistema. 
+        Novos usuários criados aqui terão acesso ao formulário de solicitações logísticas conforme as permissões definidas.
+      </div>
+    </div>
+    
+    <!-- Success Message -->
+    <div class="success-message" id="success-message">
+      Usuário criado com sucesso! O novo usuário já pode acessar o sistema.
+    </div>
+    
+    <!-- Form Container -->
+    <div class="form-container">
+      <form id="create-user-form" onsubmit="return validateForm(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="nome">Nome Completo*</label>
+            <input type="text" id="nome" name="nome" class="form-input" required>
+            <div class="error-message" id="nome-error">Por favor, informe o nome completo.</div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="cpf">CPF*</label>
+            <input type="text" id="cpf" name="cpf" class="form-input" placeholder="000.000.000-00" required>
+            <div class="error-message" id="cpf-error">Por favor, informe um CPF válido.</div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email*</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="usuario@exemplo.com" required>
+            <div class="error-message" id="email-error">Por favor, informe um email válido.</div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="telefone">Telefone de Contato*</label>
+            <input type="tel" id="telefone" name="telefone" class="form-input" placeholder="(00) 00000-0000" required>
+            <div class="error-message" id="telefone-error">Por favor, informe um telefone válido.</div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="senha">Senha*</label>
+            <input type="password" id="senha" name="senha" class="form-input" required>
+            <div class="password-strength">
+              <div class="password-strength-meter" id="password-meter"></div>
+            </div>
+            <div class="password-strength-text" id="password-text">Força da senha: Não informada</div>
+            <div class="error-message" id="senha-error">A senha deve ter pelo menos 8 caracteres, incluindo letras, números e caracteres especiais.</div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="confirmar-senha">Confirmar Senha*</label>
+            <input type="password" id="confirmar-senha" name="confirmar-senha" class="form-input" required>
+            <div class="error-message" id="confirmar-senha-error">As senhas não coincidem.</div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label class="form-label" for="nivel-acesso">Nível de Acesso*</label>
+            <select id="nivel-acesso" name="nivel-acesso" class="form-input" required>
+              <option value="">Selecione um nível de acesso</option>
+              <option value="operador">Operador (somente visualização)</option>
+              <option value="editor">Editor (visualização e edição)</option>
+              <option value="admin">Administrador (acesso completo)</option>
+            </select>
+            <div class="error-message" id="nivel-acesso-error">Por favor, selecione um nível de acesso.</div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="cancel-button" onclick="window.location.href='visualizacao-dados.html'">Cancelar</button>
+          <button type="submit" class="submit-button" id="submit-button">Criar Usuário</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Máscara para CPF
+    document.getElementById('cpf').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) {
+        value = value.slice(0, 11);
+      }
+      
+      if (value.length > 9) {
+        value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+      } else if (value.length > 6) {
+        value = value.replace(/^(\d{3})(\d{3})(\d{3}).*/, '$1.$2.$3');
+      } else if (value.length > 3) {
+        value = value.replace(/^(\d{3})(\d{3}).*/, '$1.$2');
+      }
+      
+      e.target.value = value;
+    });
+    
+    // Máscara para telefone
+    document.getElementById('telefone').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 11) {
+        value = value.slice(0, 11);
+      }
+      
+      if (value.length > 10) {
+        value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+      } else if (value.length > 6) {
+        value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+      } else if (value.length > 2) {
+        value = value.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+      }
+      
+      e.target.value = value;
+    });
+    
+    // Validação de CPF
+    function validarCPF(cpf) {
+      cpf = cpf.replace(/[^\d]/g, '');
+      
+      if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+        return false;
+      }
+      
+      let soma = 0;
+      let resto;
+      
+      for (let i = 1; i <= 9; i++) {
+        soma = soma + parseInt(cpf.substring(i-1, i)) * (11 - i);
+      }
+      
+      resto = (soma * 10) % 11;
+      if ((resto === 10) || (resto === 11)) {
+        resto = 0;
+      }
+      
+      if (resto !== parseInt(cpf.substring(9, 10))) {
+        return false;
+      }
+      
+      soma = 0;
+      for (let i = 1; i <= 10; i++) {
+        soma = soma + parseInt(cpf.substring(i-1, i)) * (12 - i);
+      }
+      
+      resto = (soma * 10) % 11;
+      if ((resto === 10) || (resto === 11)) {
+        resto = 0;
+      }
+      
+      if (resto !== parseInt(cpf.substring(10, 11))) {
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Validação de email
+    function validarEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+    
+    // Medidor de força da senha
+    document.getElementById('senha').addEventListener('input', function(e) {
+      const password = e.target.value;
+      let strength = 0;
+      let strengthText = '';
+      let color = '';
+      
+      if (password.length === 0) {
+        strengthText = 'Não informada';
+        color = '#e9ecef';
+        strength = 0;
+      } else if (password.length < 6) {
+        strengthText = 'Muito fraca';
+        color = '#dc3545';
+        strength = 20;
+      } else {
+        // Verificar complexidade
+        if (password.length >= 8) strength += 20;
+        if (/[A-Z]/.test(password)) strength += 20;
+        if (/[a-z]/.test(password)) strength += 20;
+        if (/[0-9]/.test(password)) strength += 20;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+        
+        if (strength <= 40) {
+          strengthText = 'Fraca';
+          color = '#ffc107';
+        } else if (strength <= 80) {
+          strengthText = 'Média';
+          color = '#fd7e14';
+        } else {
+          strengthText = 'Forte';
+          color = '#28a745';
+        }
+      }
+      
+      document.getElementById('password-meter').style.width = strength + '%';
+      document.getElementById('password-meter').style.backgroundColor = color;
+      document.getElementById('password-text').textContent = 'Força da senha: ' + strengthText;
+    });
+    
+    // Validação do formulário
+    function validateForm(event) {
+      event.preventDefault();
+      let isValid = true;
+      
+      // Validar nome
+      const nome = document.getElementById('nome');
+      if (nome.value.trim() === '' || nome.value.trim().split(' ').length < 2) {
+        document.getElementById('nome-error').style.display = 'block';
+        nome.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('nome-error').style.display = 'none';
+        nome.classList.remove('error');
+      }
+      
+      // Validar CPF
+      const cpf = document.getElementById('cpf');
+      if (!validarCPF(cpf.value)) {
+        document.getElementById('cpf-error').style.display = 'block';
+        cpf.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('cpf-error').style.display = 'none';
+        cpf.classList.remove('error');
+      }
+      
+      // Validar email
+      const email = document.getElementById('email');
+      if (!validarEmail(email.value)) {
+        document.getElementById('email-error').style.display = 'block';
+        email.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('email-error').style.display = 'none';
+        email.classList.remove('error');
+      }
+      
+      // Validar telefone
+      const telefone = document.getElementById('telefone');
+      if (telefone.value.replace(/\D/g, '').length < 10) {
+        document.getElementById('telefone-error').style.display = 'block';
+        telefone.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('telefone-error').style.display = 'none';
+        telefone.classList.remove('error');
+      }
+      
+      // Validar senha
+      const senha = document.getElementById('senha');
+      if (senha.value.length < 8 || !/[A-Za-z]/.test(senha.value) || !/[0-9]/.test(senha.value)) {
+        document.getElementById('senha-error').style.display = 'block';
+        senha.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('senha-error').style.display = 'none';
+        senha.classList.remove('error');
+      }
+      
+      // Validar confirmação de senha
+      const confirmarSenha = document.getElementById('confirmar-senha');
+      if (confirmarSenha.value !== senha.value) {
+        document.getElementById('confirmar-senha-error').style.display = 'block';
+        confirmarSenha.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('confirmar-senha-error').style.display = 'none';
+        confirmarSenha.classList.remove('error');
+      }
+      
+      // Validar nível de acesso
+      const nivelAcesso = document.getElementById('nivel-acesso');
+      if (nivelAcesso.value === '') {
+        document.getElementById('nivel-acesso-error').style.display = 'block';
+        nivelAcesso.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('nivel-acesso-error').style.display = 'none';
+        nivelAcesso.classList.remove('error');
+      }
+      
+      // Se tudo estiver válido, mostrar mensagem de sucesso
+      if (isValid) {
+        document.getElementById('success-message').style.display = 'block';
+        document.getElementById('create-user-form').reset();
+        document.getElementById('password-meter').style.width = '0';
+        document.getElementById('password-text').textContent = 'Força da senha: Não informada';
+        
+        // Rolar para o topo para ver a mensagem de sucesso
+        window.scrollTo(0, 0);
+        
+        // Após 3 segundos, redirecionar para a página de visualização
+        setTimeout(function() {
+          // Em um sistema real, redirecionaria para a lista de usuários
+          // window.location.href = 'visualizacao-dados.html';
+        }, 3000);
+      }
+      
+      return false;
+    }
+  </script>
+</body>
+</html>
